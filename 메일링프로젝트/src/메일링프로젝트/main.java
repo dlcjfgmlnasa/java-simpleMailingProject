@@ -13,11 +13,11 @@ import javax.mail.URLName;
 public class main {
 	public static void main(String[] args){
 		MyAuthenticator ma = new MyAuthenticator("dlcjfgmlnasa@naver.com", "zxc~2051801");
-		IMAP imap = new IMAP();
+		
 		try {
-			imap.open(ma);
+			MailAgent mailAgent = new MailAgent(new IMAP(), "imap.naver.com", "dlcjfgmlnasa@naver.com", "zxc~2051801");
 		} catch(Exception e){
-			
-		} 
+			e.printStackTrace();
+		}
 	}
 }
