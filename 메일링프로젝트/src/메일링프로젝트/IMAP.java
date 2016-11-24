@@ -25,7 +25,7 @@ public class IMAP implements MailProto{
 		session = Session.getInstance(props, null);
 		store = session.getStore();
 		store.connect(host,id,passwd);
-		folder = store.getDefaultFolder().getFolder("INBOX");
+		folder = store.getDefaultFolder().getFolder("Sent Messages");
 		folder.open(Folder.READ_WRITE);
 	}
 
