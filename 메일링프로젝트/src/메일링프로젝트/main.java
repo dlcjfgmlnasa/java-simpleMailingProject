@@ -1,35 +1,23 @@
 package 메일링프로젝트;
 
-import javax.mail.Address;
+import java.util.List;
+
 import javax.mail.Folder;
 import javax.mail.Message;
-import javax.mail.Store;
-import javax.mail.internet.InternetAddress;
 
-
-
-public class main {
+public class Main {
 	public static void main(String[] args) throws Exception{
-		MyAuthenticator ma = new MyAuthenticator("dlcjfgmlnasa@naver.com", "zxc~2051801");
-		IMAPAgent mailAgent = new IMAPAgent("imap.naver.com", "dlcjfgmlnasa@naver.com", "zxc~2051801");
-		mailAgent.open();
-		Message[] message = mailAgent.getMessage();
-		Address[] address = message[0].getFrom();
-		InternetAddress addr =(InternetAddress)address[0];
-		System.out.println(addr.getPersonal());
-		System.out.println(addr.getAddress());
-		System.out.println();
-		
-		Store s = mailAgent.getStore();
-		Folder[] folders = s.getDefaultFolder().list();
-		for(Folder folder : folders){
-			Folder tempFolder = mailAgent.getFolder(folder.getFullName());
-			System.out.println(folder.getFullName());
-			System.out.println(tempFolder.getMessageCount());
+		/*
+		IMAPAgent imapAgent = new IMAPAgent("imap.naver.com", "dlcjfgmlnasa", "zxc~2051801");
+		MessageList mList = new MessageList();
+		for(String folderName : imapAgent.getFolderNameList()){
+			Folder folder = imapAgent.getFolder(folderName);
+			List<Message> messages = mList.getUnReadMessages(folder);
+			for(Message m : messages){
+				System.out.println(m.getSubject());
+			}
 		}
-		
-		mailAgent.close();
+		*/
+		new LoginPage("login").setVisible(true);
 	}
 }
-
-

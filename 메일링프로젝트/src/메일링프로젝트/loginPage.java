@@ -1,75 +1,76 @@
 package 메일링프로젝트;
 
-import java.awt.BorderLayout;
-import java.awt.EventQueue;
+import java.awt.FlowLayout;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-import javax.swing.JLabel;
-import javax.swing.JTextField;
-import javax.swing.JPasswordField;
+import javax.mail.MessagingException;
 import javax.swing.JButton;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPasswordField;
+import javax.swing.JTextField;
 
-public class loginPage extends JFrame {
-	private JPanel contentPane;
-	private JTextField textField;
-	private JPasswordField passwordField;
-
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
+class LoginPage extends JFrame{
+	public LoginPage(String loginTitleName){
+		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		setLayout(new FlowLayout());
+		setTitle(loginTitleName);
+		
+		JLabel jLabel1 = new JLabel("아이디   :   ");
+		JTextField jTextField1 = new JTextField(10);
+		JLabel jLabel2 = new JLabel("비밀번호 : ");
+		JPasswordField jPasswordField = new JPasswordField(10);
+		JButton button = new JButton("회원가입");
+		JButton button2 = new JButton("로그인");
+		
+		
+		button2.addActionListener(e ->{
+			if("".equals(jTextField1.getText()) || "".equals(jPasswordField.getText())){
+				JOptionPane.showMessageDialog(null, "아이디와 페스워드를 입력하시오!!","Error!!",JOptionPane.ERROR_MESSAGE);
+				new LoginPage("login").setVisible(true);
+				return;
+			} else {
+				if(!isValidEmail(jTextField1.getText())){
+					JOptionPane.showMessageDialog(null, "이메일 형식이 아닙니다!!","Error!!",JOptionPane.ERROR_MESSAGE);
+					new LoginPage("login").setVisible(true);
+					return;
+				}
+				
+				String mail = jTextField1.getText().split("@")[1];
+				String id = jTextField1.getText().split("@")[0];
+				String passwd = jPasswordField.getText();
+				User.mail = mail;
+				User.id = id;
+				User.passwd = passwd;
 				try {
-					loginPage frame = new loginPage();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
+					setVisible(false);
+					new MainFrame("mailing Program 0.1v").setVisible(true);
+				} catch (MessagingException e1) {
+					e1.printStackTrace();
 				}
 			}
 		});
+		
+		add(jLabel1);
+		add(jTextField1);
+		add(jLabel2);
+		add(jPasswordField);
+		//add(button);
+		add(button2);
+		setSize(250,200);
+		setLocationRelativeTo(null);
 	}
-
-	/**
-	 * Create the frame.
-	 */
-	public loginPage() {
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 337, 253);
-		setTitle("로그인 페이지");
-		
-		contentPane = new JPanel();
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		setContentPane(contentPane);
-		contentPane.setLayout(null);
-		
-		JLabel lblLogin = new JLabel("아이디");
-		lblLogin.setBounds(31, 52, 57, 15);
-		contentPane.add(lblLogin);
-		
-		JLabel lblPasswd = new JLabel("페스워드");
-		lblPasswd.setBounds(31, 98, 57, 15);
-		contentPane.add(lblPasswd);
-		
-		textField = new JTextField();
-		textField.setBounds(160, 49, 149, 21);
-		contentPane.add(textField);
-		textField.setColumns(10);
-		
-		passwordField = new JPasswordField();
-		passwordField.setBounds(160, 95, 149, 21);
-		contentPane.add(passwordField);
-		
-		JButton accounts = new JButton("회원가입");
-		accounts.setBounds(12, 186, 93, 23);
-		contentPane.add(accounts);
-		
-		JButton login = new JButton("로그인");
-		login.setBounds(226, 186, 83, 23);
-		contentPane.add(login);
+	
+	 public static boolean isValidEmail(String email) {
+		  boolean err = false;
+		  String regex = "^[_a-z0-9-]+(.[_a-z0-9-]+)*@(?:\\w+\\.)+\\w+$";   
+		  Pattern p = Pattern.compile(regex);
+		  Matcher m = p.matcher(email);
+		  if(m.matches()) {
+		   err = true; 
+		  }
+		  return err;
 	}
 }
