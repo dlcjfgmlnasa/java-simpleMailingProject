@@ -1,7 +1,6 @@
 package 메일링프로젝트;
 
 import java.awt.BorderLayout;
-import java.awt.FlowLayout;
 import java.awt.Font;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
