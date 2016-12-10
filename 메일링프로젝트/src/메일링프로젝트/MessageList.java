@@ -10,6 +10,7 @@ import javax.mail.MessagingException;
 import javax.mail.search.FlagTerm;
 
 class MessageList{
+	@SuppressWarnings("static-access")
 	private void folderOpen(Folder folder) {
 		try{
 			folder.open(folder.READ_ONLY);
@@ -27,13 +28,15 @@ class MessageList{
 		return Arrays.asList(folder.search(new FlagTerm(new Flags(Flags.Flag.SEEN), false)));
 	}
 	
-	public List<Message> getRecentMessages(Folder folder) throws MessagingException{
+	public List<Message> getRecentMessages(Folder folder, int count) throws MessagingException{
 		folderOpen(folder);
-		return Arrays.asList(folder.search(new FlagTerm(new Flags(Flags.Flag.RECENT), true)));
+		int folderSize = folder.getMessageCount();
+		int setSize = folderSize > count ? folderSize-count+1 : folderSize-1;
+		if(folderSize == 0) return Arrays.asList();
+		return Arrays.asList(folder.getMessages(setSize,folderSize));
 	}
 	
 	public void recentMessage(Folder folder) throws MessagingException{
-		int count = folder.getNewMessageCount();
 		folder.getNewMessageCount();
 	}
 }
